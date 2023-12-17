@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MYIPJUL</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            text-align: center;
+            margin: 0;
+            padding: 40px 0;
+            color: #495057;
+        }
+
+        #ipInfo {
+            background-color: #fff;
+            margin: auto;
+            max-width: 600px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            border: 1px solid #dee2e6;
+        }
+
+        .info-item {
+            margin: 10px 0;
+            padding: 12px 20px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        }
+
+            .info-item:last-child {
+                border-bottom: none;
+            }
+
+        .info-title {
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        .info-data {
+            font-weight: 400;
+            color: #6c757d;
+        }
+
+        h1 {
+            color: #343a40;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MYIPJUL</h1>
+    <div id="ipInfo">
+        <div id="ipAddress" class="info-item"><span class="info-title">IP Address:</span> <span class="info-data">Loading...</span></div>
+        <div id="country" class="info-item"><span class="info-title">Country:</span> <span class="info-data">Loading...</span></div>
+        <div id="region" class="info-item"><span class="info-title">Region:</span> <span class="info-data">Loading...</span></div>
+        <div id="city" class="info-item"><span class="info-title">City:</span> <span class="info-data">Loading...</span></div>
+        <div id="district" class="info-item"><span class="info-title">District:</span> <span class="info-data">Loading...</span></div>
+        <div id="postCode" class="info-item"><span class="info-title">Post Code:</span> <span class="info-data">Loading...</span></div>
+        <div id="longitude" class="info-item"><span class="info-title">Longitude:</span> <span class="info-data">Loading...</span></div>
+        <div id="latitude" class="info-item"><span class="info-title">Latitude:</span> <span class="info-data">Loading...</span></div>
+    </div>
+
+    <script>
+        async function fetchIpInfo() {
+            try {
+                const response = await fetch('/api/myip');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+
+                // Update each element with the respective data
+                document.querySelector('#ipAddress .info-data').textContent = data.ipAddress || 'Not available';
+                document.querySelector('#country .info-data').textContent = data.country || 'Not available';
+                document.querySelector('#region .info-data').textContent = data.region || 'Not available';
+                document.querySelector('#city .info-data').textContent = data.city || 'Not available';
+                document.querySelector('#district .info-data').textContent = data.district || 'Not available';
+                document.querySelector('#postCode .info-data').textContent = data.postCode || 'Not available';
+                document.querySelector('#longitude .info-data').textContent = data.longitude ? data.longitude.toFixed(2) : 'Not available';
+                document.querySelector('#latitude .info-data').textContent = data.latitude ? data.latitude.toFixed(2) : 'Not available';
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        }
+
+        window.onload = fetchIpInfo;
+    </script>
+</body>
+</html>
